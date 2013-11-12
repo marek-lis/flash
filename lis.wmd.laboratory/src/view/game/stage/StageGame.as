@@ -61,7 +61,7 @@ package view.game.stage
 			var t:Touch = e.touches[e.touches.length - 1];
 			if (t && t.phase == TouchPhase.BEGAN) {
 				trace(this + " onTouchHandler " + t.phase + " " + t.globalX + " " + t.globalY);
-			//	dispatchEventWith(ViewMsg.CLICK, false, {x:t.globalX, y:t.globalY});
+				dispatchEventWith(ViewMsg.CLICK, false, {x:t.globalX, y:t.globalY});
 			}
 		}
 		

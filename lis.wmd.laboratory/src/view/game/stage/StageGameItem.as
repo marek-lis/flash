@@ -117,6 +117,11 @@ package view.game.stage
 			return Math.sqrt(Math.pow((_vo.x - x), 2) + Math.pow((_vo.y - y), 2)) < _vo.size;
 		}
 		
+		public function isNearby(x:int, y:int):Boolean
+		{
+			return Math.sqrt(Math.pow((_vo.x - x), 2) + Math.pow((_vo.y - y), 2)) < Math.max(_vo.size + _vo.radiusMin, 2 * _vo.radiusMin);
+		}
+		
 		public function isCollidingWith(item:IGameItem):Boolean
 		{
 			return Math.sqrt(Math.pow((_vo.x - item.getVO().x), 2) + Math.pow((_vo.y - item.getVO().y), 2)) < _vo.size + item.getVO().size; //_vo.radius + item.getVO().radius;

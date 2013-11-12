@@ -2,6 +2,7 @@ package view.game.stage
 {
 	import messages.DataMsg;
 	import messages.ViewMsg;
+	import model.GameBoardProxy;
 	import model.GameItemVO;
 	import model.GameProxy;
 	import model.SynthProxy;
@@ -23,6 +24,9 @@ package view.game.stage
 		public var gameProxy:GameProxy;
 		
 		[Inject]
+		public var gameBoardProxy:GameBoardProxy;
+		
+		[Inject]
 		public var synthProxy:SynthProxy;
 		
 		private var _stageGameView:StageGame;
@@ -37,7 +41,7 @@ package view.game.stage
 			
 			addHandler(DataMsg.ADD_ITEM, onAddItemHandler);
 			addHandler(DataMsg.REMOVE_ITEM, onRemoveItemHandler);
-			addHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
+			//addHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
 			
 			sendMessage(ViewMsg.CLICK, {x: (gameProxy.screenWidth >> 1), y: (gameProxy.screenHeight >> 1)});
 		}
@@ -48,7 +52,7 @@ package view.game.stage
 			
 			removeHandler(DataMsg.ADD_ITEM, onAddItemHandler);
 			removeHandler(DataMsg.REMOVE_ITEM, onRemoveItemHandler);
-			removeHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
+			//removeHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
 			
 			view.removeEventListener(StageGameEvent.TICK, onTickHandler);
 			view.removeEventListener(StageGameEvent.CLICK, onClickHandler);
@@ -73,14 +77,14 @@ package view.game.stage
 		
 		private function onAddItemHandler(item:StageGameItem):void
 		{
-			trace(this + " onAddItemHandler " + item);
+			trace(this + " onAddItemHandler " + item.getVO().id);
 			view.addChild(item);
 			item.showMe();
 		}
 		
 		private function onRemoveItemHandler(item:StageGameItem):void
 		{
-			trace(this + " onRemoveItemHandler " + item);
+			trace(this + " onRemoveItemHandler " + item.getVO().id);
 			item.hideMe(function():void { 
 				view.removeChild(item);
 			});

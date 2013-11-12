@@ -14,6 +14,7 @@ package view.game
 		function bounceMe():void;
 		function getVO():GameItemVO;
 		function isHit(x:int, y:int):Boolean;
+		function isNearby(x:int, y:int):Boolean;
 		function isCollidingWith(item:IGameItem):Boolean;
 	}
 	

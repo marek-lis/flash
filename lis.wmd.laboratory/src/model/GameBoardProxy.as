@@ -14,13 +14,15 @@ package model
 		
 		public var items:Vector.<IGameItem>;
 		
+		public var itemId:int = 0;
+		
 		public function GameBoardProxy() 
 		{
 			items = new Vector.<IGameItem>();
 		}
 		
 		public function addItem(item:GameItemVO):void {
-			item.id = items.length;
+			item.id = itemId++;
 			items.push(new StageGameItem(item));
 			trace("ADD ITEM " + item.id);
 			sendMessage(DataMsg.ADD_ITEM, items[items.length - 1]);
@@ -46,6 +48,19 @@ package model
 			for (i = 0; i < len; i++) {
 				if (items[i].isHit(x,y)) {
 					result = items[i];
+					break;
+				}
+			}
+			return result;
+		}
+		
+		public function hasItemNearby(x:int, y:int):Boolean {
+			var i:int = 0;
+			var len:int = items.length;
+			var result:Boolean = false;
+			for (i = 0; i < len; i++) {
+				if (items[i].isNearby(x,y)) {
+					result = true;
 					break;
 				}
 			}

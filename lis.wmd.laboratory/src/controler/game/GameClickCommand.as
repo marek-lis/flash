@@ -30,7 +30,8 @@ package controler.game
 			trace("ITEM: " + item);
 			if (item) {
 				gameBoardProxy.removeItem(item.getVO().id);
-			} else {
+			} else 
+			if (!gameBoardProxy.hasItemNearby(o.x, o.y)){
 				var vo:GameItemVO = new GameItemVO();
 				vo.x = o.x;
 				vo.y = o.y;
