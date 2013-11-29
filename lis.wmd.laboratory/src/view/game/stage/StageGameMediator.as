@@ -1,13 +1,18 @@
 package view.game.stage
 {
+	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	import messages.DataMsg;
 	import messages.ViewMsg;
+	import model.AssetFactoryProxy;
 	import model.GameBoardProxy;
 	import model.GameItemVO;
 	import model.GameProxy;
 	import model.SynthProxy;
 	import org.mvcexpress.mvc.Mediator;
+	import starling.core.Starling;
 	import starling.events.Event;
+	import starling.extensions.ParticleSystem;
 	import view.game.IGameItem;
 	
 	/**
@@ -27,6 +32,9 @@ package view.game.stage
 		public var gameBoardProxy:GameBoardProxy;
 		
 		[Inject]
+		public var assetFactoryProxy:AssetFactoryProxy;
+		
+		[Inject]
 		public var synthProxy:SynthProxy;
 		
 		private var _stageGameView:StageGame;
@@ -41,7 +49,7 @@ package view.game.stage
 			
 			addHandler(DataMsg.ADD_ITEM, onAddItemHandler);
 			addHandler(DataMsg.REMOVE_ITEM, onRemoveItemHandler);
-			//addHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
+			addHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
 			
 			sendMessage(ViewMsg.CLICK, {x: (gameProxy.screenWidth >> 1), y: (gameProxy.screenHeight >> 1)});
 		}
@@ -52,7 +60,7 @@ package view.game.stage
 			
 			removeHandler(DataMsg.ADD_ITEM, onAddItemHandler);
 			removeHandler(DataMsg.REMOVE_ITEM, onRemoveItemHandler);
-			//removeHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
+			removeHandler(DataMsg.BOUNCE_ITEM, onBounceItemHandler);
 			
 			view.removeEventListener(StageGameEvent.TICK, onTickHandler);
 			view.removeEventListener(StageGameEvent.CLICK, onClickHandler);
@@ -78,6 +86,7 @@ package view.game.stage
 		private function onAddItemHandler(item:StageGameItem):void
 		{
 			trace(this + " onAddItemHandler " + item.getVO().id);
+			//item.setColor(synthProxy.getNoteColor(Math.random()));
 			view.addChild(item);
 			item.showMe();
 		}
@@ -92,9 +101,23 @@ package view.game.stage
 		
 		private function onBounceItemHandler(params:Object):void 
 		{
-			trace(this + " onBounceItemHandler " + params);
+			/*
+			var particle:ParticleSystem = assetFactoryProxy.getParticle();
+			particle.scaleX = particle.scaleY = params.item1.getVO().scale + params.item2.getVO().scale;
+			particle.x = params.bouncePoint.x;
+			particle.y = params.bouncePoint.y;
+			Starling.current.juggler.add(particle);
+			particle.start(0.1);
+			view.addChild(particle);
+			
+			setTimeout(function():void {
+				view.removeChild(particle);
+				Starling.current.juggler.remove(particle);
+			}, 1000);
+			*/
 			synthProxy.playNote(params.ratio1);
 			synthProxy.playNote(params.ratio2);
+			
 		}
 	
 	}

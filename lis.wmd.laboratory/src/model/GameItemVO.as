@@ -1,5 +1,6 @@
 package model 
 {
+	import flash.geom.Point;
 	import starling.textures.Texture;
 	/**
 	 * ...
@@ -22,10 +23,17 @@ package model
 		{
 			id = -1;
 			radiusMin = 25;
-			radiusMax = 1024;
+			radiusMax = 512;//1024;
 			direction = 1;
 			effect = 0;
 			radius = 1;
+		}
+		
+		public function getBouncePoint(item:GameItemVO):Point {
+			var angle:Number = Math.atan2(item.x - x, item.y - y);
+			var xx:int = size * Math.sin(angle);
+			var yy:int = size * Math.cos(angle);
+			return new Point(x + xx, y + yy);
 		}
 		
 		public function get ratio():Number {

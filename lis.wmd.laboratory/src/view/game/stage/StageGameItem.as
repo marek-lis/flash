@@ -5,6 +5,7 @@ package view.game.stage
 	import com.greensock.easing.Elastic;
 	import com.greensock.easing.Expo;
 	import com.greensock.TweenMax;
+	import flash.geom.Rectangle;
 	import model.GameItemVO;
 	import starling.display.BlendMode;
 	import starling.display.Image;
@@ -32,8 +33,9 @@ package view.game.stage
 		{
 			_vo = vo;
 			_image = new Image(_vo.texture);
-			//_image.smoothing = TextureSmoothing.TRILINEAR;
+			_image.smoothing = TextureSmoothing.BILINEAR;
 			addChild(_image);
+			//_image.color = 0xFFCCCC;
 			alpha = 0;
 			touchable = false;
 			pivotX = width / 2;
@@ -74,7 +76,7 @@ package view.game.stage
 			//trace(tt);
 			if (_vo.direction == 1)
 			{
-				if (_vo.radius < _vo.radiusMax)
+				if (_vo.radius < _vo.radiusMax >> 1)
 				{
 					_vo.radius++;
 				}
@@ -95,7 +97,7 @@ package view.game.stage
 				}
 			}
 			//rotation += 5 * (Math.PI / 180);
-			rotation += _vo.direction * 0.25 * tt * (Math.PI / 180);
+			rotation += _vo.direction * 0.035 * tt * (Math.PI / 180);
 			//width = height = 2 * _vo.radius;
 			scaleX = scaleY = _vo.scale;
 			//trace(_vo.x + " " + _vo.y + " " + (_vo.radius / _vo.radiusMax));
@@ -112,6 +114,10 @@ package view.game.stage
 			}
 		}
 		
+		public function setColor(color:Number):void {
+			_image.color = color;
+		}
+		
 		public function isHit(x:int, y:int):Boolean
 		{
 			return Math.sqrt(Math.pow((_vo.x - x), 2) + Math.pow((_vo.y - y), 2)) < _vo.size;
@@ -125,6 +131,14 @@ package view.game.stage
 		public function isCollidingWith(item:IGameItem):Boolean
 		{
 			return Math.sqrt(Math.pow((_vo.x - item.getVO().x), 2) + Math.pow((_vo.y - item.getVO().y), 2)) < _vo.size + item.getVO().size; //_vo.radius + item.getVO().radius;
+		}
+		
+		public function isCollidingWithBounds(bounds:Rectangle):Boolean {
+			return _vo.x - _vo.size < bounds.x ||
+					_vo.x + _vo.size > bounds.right ||
+					_vo.y - _vo.size < bounds.y ||
+					_vo.y + _vo.size > bounds.bottom;
+				
 		}
 	
 	}

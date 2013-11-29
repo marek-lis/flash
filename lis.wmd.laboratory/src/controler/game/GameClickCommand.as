@@ -31,7 +31,7 @@ package controler.game
 			if (item) {
 				gameBoardProxy.removeItem(item.getVO().id);
 			} else 
-			if (!gameBoardProxy.hasItemNearby(o.x, o.y)){
+			if (!gameBoardProxy.hasItemNearby(o.x, o.y) && !gameBoardProxy.isOutOfBounds(o.x, o.y)){
 				var vo:GameItemVO = new GameItemVO();
 				vo.x = o.x;
 				vo.y = o.y;

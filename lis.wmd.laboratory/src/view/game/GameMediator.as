@@ -41,6 +41,7 @@ package view.game
 				_gameView = game;
 				mediatorMap.mediate(_gameView);
 			});
+			s.showStats = true;
 		}
 		
 		override public function onRemove():void 
